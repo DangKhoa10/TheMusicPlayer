@@ -15,10 +15,12 @@ const playlist = $('.playlist')
 const PLAYER_STORAGE_KEY = 'Khoa_Player'
 
 const app = {
+    arrRandom: [],
     currentIndex: 0,
     isPlaying: false,
     isRandom: false,
     isRepeat: false,
+    config: JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY)) || {},
     songs: [{
             name: "Infinity",
             singer: "Jaymes Young",
@@ -56,6 +58,10 @@ const app = {
             img: "https://i.ytimg.com/vi/Nnj3YFlUa3Q/maxresdefault.jpg"
         },
     ],
+    setConfig: function(key, value) {
+        this.config[key] = value;
+        localStorage.setItem(PLAYER_STORAGE_KEY, JSON.stringify(this.config))
+    },
     defineProperties: function() {
         Object.defineProperty(this, "currentSong", {
             get: function() {
@@ -126,10 +132,11 @@ const app = {
                 }
             }
             //tour song
-        progress.onchange = function(e) {
+        progress.oninput = function(e) {
             const seekTime = e.target.value * audio.duration / 100
             audio.currentTime = seekTime
         }
+
 
         //next song
         next.onclick = function(e) {
@@ -155,23 +162,26 @@ const app = {
             }
             //random song
         random.onclick = function(e) {
-                if (_this.isRandom) {
-                    _this.isRandom = false
-                    random.classList.remove('active')
-                } else {
-                    _this.isRandom = true
-                    random.classList.add('active')
-                }
+                _this.isRandom = !_this.isRandom //gán ngược lại vd isRD là true , đang bạt , gán ngược lại false , nếu false xuống dưới nó remove active và ngược lại
+                random.classList.toggle('active', _this.isRandom) //đối số thứ 2 của toggle là true hoặc false, true thì add , false thì remove
+                _this.setConfig('isRandom', _this.isRandom)
+
             }
             //Lặp lại 1 bài
         repeat.onclick = function(e) {
-                if (_this.isRepeat) {
-                    _this.isRepeat = false
-                    repeat.classList.remove('active')
-                } else {
-                    _this.isRepeat = true
-                    repeat.classList.add('active')
-                }
+                //cách 1
+                _this.isRepeat = !_this.isRepeat
+                repeat.classList.toggle("active", _this.isRepeat)
+
+                //cách 2
+                // if (_this.isRepeat) {
+                //     _this.isRepeat = false
+                //     repeat.classList.remove('active')
+                // } else {
+                //     _this.isRepeat = true
+                //     repeat.classList.add('active')
+                // }
+                _this.setConfig('isRepeat', _this.isRepeat)
             }
             //tự động next sau khi hết bài
         audio.onended = function() {
@@ -201,7 +211,7 @@ const app = {
         setTimeout(() => {
             $('.song.active').scrollIntoView({
                 behavior: 'smooth',
-                block: 'nearest',
+                block: 'end',
             })
         }, 300)
     },
@@ -218,12 +228,20 @@ const app = {
         this.loadCurrentSong()
     },
     randomSong: function() {
+        if (this.songs.length == this.arrRandom.length)
+            this.arrRandom = []
         let newIndex
         do {
             newIndex = Math.floor(Math.random() * this.songs.length)
-        } while (newIndex === this.currentIndex)
+        } while (newIndex === this.currentIndex || this.arrRandom.some((value) => value === newIndex))
         this.currentIndex = newIndex
+        this.arrRandom.push(this.currentIndex)
         this.loadCurrentSong()
+    },
+    LoadConfig: function() {
+        this.isRandom = this.config.isRandom
+        this.isRepeat = this.config.isRepeat
+
     },
     loadCurrentSong: function() {
         heading.textContent = this.currentSong.name
@@ -231,6 +249,9 @@ const app = {
         audio.src = this.currentSong.path
     },
     start: function() {
+        //Định lại cấu hình cũ lúc trước xài
+        this.LoadConfig()
+
         //Định nghĩa vài thuộc tính
         this.defineProperties()
             // Xử lý
@@ -239,6 +260,10 @@ const app = {
         this.loadCurrentSong()
             //render ra bài hát
         this.render()
+        if (this.isRandom)
+            random.classList.toggle('active', this.isRandom)
+        if (this.isRepeat)
+            repeat.classList.toggle("active", this.isRepeat)
     }
 
 }
