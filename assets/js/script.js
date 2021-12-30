@@ -57,6 +57,36 @@ const app = {
             path: './assets/music/Thenight.mp3',
             img: "https://i.ytimg.com/vi/Nnj3YFlUa3Q/maxresdefault.jpg"
         },
+        {
+            name: "Tie me down",
+            singer: "Gryffin",
+            path: './assets/music/tiemedown.mp3',
+            img: "https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/cover/2/d/7/2/2d727e2546c1b6f61e2ceb6a2e5230db.jpg"
+        },
+        {
+            name: "Heat Waves",
+            singer: "Glass Animals",
+            path: './assets/music/heatWaves.mp3',
+            img: "https://opensource.glassanimals.com/wp-content/uploads/2020/05/gaos-dreamland-social-1024x538.jpg"
+        },
+        {
+            name: "The Other Side Of Paradise",
+            singer: "Glass Animals",
+            path: './assets/music/theother.mp3',
+            img: "https://opensource.glassanimals.com/wp-content/uploads/2020/05/gaos-dreamland-social-1024x538.jpg"
+        },
+        {
+            name: "Sou Fevela",
+            singer: "MC Bruninho, Vitinho Ferrari",
+            path: './assets/music/SouFavela.mp3',
+            img: "https://daddykool.com/Photo/418459635529"
+        },
+        {
+            name: "idfc x soap",
+            singer: "MC Bruninho, Vitinho Ferrari",
+            path: './assets/music/idfc.mp3',
+            img: "https://i.ytimg.com/vi/iuKdivKTrRU/hqdefault.jpg"
+        },
     ],
     setConfig: function(key, value) {
         this.config[key] = value;
