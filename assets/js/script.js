@@ -83,9 +83,15 @@ const app = {
         },
         {
             name: "idfc x soap",
-            singer: "MC Bruninho, Vitinho Ferrari",
+            singer: "Black Bear",
             path: './assets/music/idfc.mp3',
             img: "https://i.ytimg.com/vi/iuKdivKTrRU/hqdefault.jpg"
+        },
+        {
+            name: "Normal No More",
+            singer: "TYSM",
+            path: './assets/music/10.mp3',
+            img: "https://i.ytimg.com/vi/iGrN7Gb8DtI/maxresdefault.jpg"
         },
     ],
     setConfig: function(key, value) {
